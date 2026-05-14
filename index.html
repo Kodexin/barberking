@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BarberKing — Barbería de Élite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --negro: #080808;
+      --negro-suave: #111111;
+      --negro-card: #141414;
+      --oro: #C9A84C;
+      --oro-claro: #E8C97A;
+      --oro-oscuro: #8B6914;
+      --blanco: #F5F0E8;
+      --gris: #888;
+      --borde: rgba(201, 168, 76, 0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--negro);
+      color: var(--blanco);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+      backdrop-filter: blur(2px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--oro);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--blanco);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gris);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--oro); }
+
+    .nav-cta {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--negro);
+      background: var(--oro);
+      padding: 0.6rem 1.5rem;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .nav-cta:hover { background: var(--oro-claro); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 4rem 6rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--oro);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--oro);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--oro);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--gris);
+      margin-bottom: 3rem;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--negro);
+      background: var(--oro);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--oro-claro);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--oro);
+      text-decoration: none;
+      border-bottom: 1px solid var(--borde);
+      padding-bottom: 2px;
+      transition: border-color 0.3s;
+    }
+
+    .btn-ghost:hover { border-color: var(--oro); }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--borde);
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--oro);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-top: 0.4rem;
+    }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%) contrast(1.1);
+      opacity: 0.85;
+    }
+
+    .hero-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--negro) 0%, transparent 30%),
+                  linear-gradient(to top, var(--negro) 0%, transparent 40%);
+    }
+
+    .hero-tag {
+      position: absolute;
+      bottom: 3rem;
+      right: 3rem;
+      border: 1px solid var(--borde);
+      padding: 1.2rem 1.5rem;
+      background: rgba(8,8,8,0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-tag-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-tag-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--oro);
+    }
+
+    /* Línea decorativa diagonal */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--borde) 20%, var(--borde) 80%, transparent);
+      z-index: 3;
+    }
+
+    /* ── SECCIÓN TÍTULO ── */
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--oro);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .section-eyebrow::before,
+    .section-eyebrow::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--oro);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--oro);
+    }
+
+    /* ── SERVICIOS ── */
+    .servicios {
+      padding: 8rem 6rem;
+      background: var(--negro-suave);
+      position: relative;
+    }
+
+    .servicios::before {
+      content: 'SERVICIOS';
+      position: absolute;
+      top: 4rem;
+      right: 4rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 8rem;
+      font-weight: 900;
+      color: rgba(201, 168, 76, 0.03);
+      letter-spacing: 0.1em;
+      pointer-events: none;
+    }
+
+    .servicios-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--borde);
+    }
+
+    .servicio-card {
+      background: var(--negro-card);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+      cursor: default;
+    }
+
+    .servicio-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--oro);
+      transition: width 0.4s ease;
+    }
+
+    .servicio-card:hover::before { width: 100%; }
+    .servicio-card:hover { background: #181818; }
+
+    .servicio-numero {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: rgba(201, 168, 76, 0.1);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .servicio-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .servicio-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--gris);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .servicio-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--oro);
+    }
+
+    .servicio-precio span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--gris);
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    /* ── GALERÍA ── */
+    .galeria {
+      padding: 8rem 6rem;
+    }
+
+    .galeria-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 300px 300px;
+      gap: 6px;
+    }
+
+    .galeria-item {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .galeria-item:first-child {
+      grid-row: 1 / 3;
+    }
+
+    .galeria-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(40%) contrast(1.1);
+      transition: transform 0.6s ease, filter 0.4s ease;
+    }
+
+    .galeria-item:hover .galeria-img {
+      transform: scale(1.05);
+      filter: grayscale(10%) contrast(1.1);
+    }
+
+    .galeria-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.7) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .galeria-item:hover .galeria-overlay { opacity: 1; }
+
+    /* ── CONTACTO ── */
+    .contacto {
+      padding: 8rem 6rem;
+      background: var(--negro-suave);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .contacto-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .contacto-info h2 em {
+      font-style: italic;
+      color: var(--oro);
+    }
+
+    .contacto-info p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      color: var(--gris);
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    .contacto-datos {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .dato {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--borde);
+    }
+
+    .dato:last-child { border-bottom: none; }
+
+    .dato-icono {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--borde);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--oro);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .dato-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 0.25rem;
+    }
+
+    .dato-valor {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--blanco);
+    }
+
+    .contacto-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gris);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--negro-card);
+      border: 1px solid var(--borde);
+      color: var(--blanco);
+      padding: 0.9rem 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.3s;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--oro);
+    }
+
+    .form-group textarea { resize: none; height: 100px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem 6rem;
+      border-top: 1px solid var(--borde);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--oro);
+    }
+
+    .footer-logo span { color: var(--blanco); }
+
+    .footer-text {
+      font-size: 0.7rem;
+      color: var(--gris);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gris);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--oro); }
+
+    /* ── ANIMACIONES ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow { animation: fadeUp 0.8s ease 0.2s both; }
+    .hero-title   { animation: fadeUp 0.8s ease 0.4s both; }
+    .hero-subtitle{ animation: fadeUp 0.8s ease 0.6s both; }
+    .hero-actions { animation: fadeUp 0.8s ease 0.8s both; }
+    .hero-stats   { animation: fadeUp 0.8s ease 1.0s both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav { padding: 1.5rem 2rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 8rem 2rem 4rem; }
+      .hero-right { display: none; }
+      .hero::after { display: none; }
+      .servicios { padding: 5rem 2rem; }
+      .servicios-grid { grid-template-columns: 1fr; }
+      .galeria { padding: 5rem 2rem; }
+      .galeria-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .galeria-item:first-child { grid-row: auto; grid-column: 1 / 3; height: 300px; }
+      .galeria-item { height: 200px; }
+      .contacto { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 3rem; }
+      footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Barber<span>King</span></a>
+    <ul class="nav-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a href="#contacto" class="nav-cta">Reservar</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Desde 2009 · Lima, Perú</div>
+      <h1 class="hero-title">
+        El arte<br>de <em>lucir</em><br>perfecto.
+      </h1>
+      <p class="hero-subtitle">
+        Cortes de precisión, afeitados tradicionales y tratamientos premium para el hombre que exige excelencia.
+      </p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn-primary">Reservar cita</a>
+        <a href="#servicios" class="btn-ghost">Ver servicios</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-number">15+</div>
+          <div class="stat-label">Años de experiencia</div>
+        </div>
+        <div>
+          <div class="stat-number">4K+</div>
+          <div class="stat-label">Clientes satisfechos</div>
+        </div>
+        <div>
+          <div class="stat-number">8</div>
+          <div class="stat-label">Barberos expertos</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img class="hero-image"
+        src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=900&q=80"
+        alt="Barbero profesional">
+      <div class="hero-image-overlay"></div>
+      <div class="hero-tag">
+        <div class="hero-tag-label">Calificación</div>
+        <div class="hero-tag-value">★★★★★ 4.9/5</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="servicios" id="servicios">
+    <div class="section-header">
+      <div class="section-eyebrow">Lo que ofrecemos</div>
+      <h2 class="section-title">Nuestros <em>servicios</em></h2>
+    </div>
+    <div class="servicios-grid">
+      <div class="servicio-card">
+        <div class="servicio-numero">01</div>
+        <div class="servicio-nombre">Corte Clásico</div>
+        <p class="servicio-desc">Corte tradicional adaptado a tu estilo. Incluye lavado, corte con tijera y secado.</p>
+        <div class="servicio-precio">S/. 35 <span>/ sesión</span></div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-numero">02</div>
+        <div class="servicio-nombre">Corte + Barba</div>
+        <p class="servicio-desc">El pack completo. Corte de precisión y diseño de barba con navaja y hot towel.</p>
+        <div class="servicio-precio">S/. 55 <span>/ sesión</span></div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-numero">03</div>
+        <div class="servicio-nombre">Afeitado Real</div>
+        <p class="servicio-desc">Afeitado con navaja de filo, toalla caliente y crema hidratante. Experiencia premium.</p>
+        <div class="servicio-precio">S/. 40 <span>/ sesión</span></div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-numero">04</div>
+        <div class="servicio-nombre">Diseño de Barba</div>
+        <p class="servicio-desc">Perfilado y diseño de barba a medida. Incluye aceite hidratante y acabado perfecto.</p>
+        <div class="servicio-precio">S/. 25 <span>/ sesión</span></div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-numero">05</div>
+        <div class="servicio-nombre">Coloración</div>
+        <p class="servicio-desc">Tinte capilar o de barba con productos premium. Cubre canas o cambia de look.</p>
+        <div class="servicio-precio">S/. 60 <span>/ sesión</span></div>
+      </div>
+      <div class="servicio-card">
+        <div class="servicio-numero">06</div>
+        <div class="servicio-nombre">Tratamiento VIP</div>
+        <p class="servicio-desc">Corte + barba + mascarilla + masaje capilar. La experiencia BarberKing completa.</p>
+        <div class="servicio-precio">S/. 90 <span>/ sesión</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section class="galeria" id="galeria">
+    <div class="section-header">
+      <div class="section-eyebrow">Nuestro trabajo</div>
+      <h2 class="section-title">La <em>galería</em></h2>
+    </div>
+    <div class="galeria-grid">
+      <div class="galeria-item">
+        <img class="galeria-img" src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=800&q=80" alt="Barbería 1">
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item">
+        <img class="galeria-img" src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80" alt="Barbería 2">
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item">
+        <img class="galeria-img" src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&q=80" alt="Barbería 3">
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item">
+        <img class="galeria-img" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Barbería 4">
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item">
+        <img class="galeria-img" src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=600&q=80" alt="Barbería 5">
+        <div class="galeria-overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contacto" id="contacto">
+    <div class="contacto-info">
+      <div class="section-eyebrow" style="justify-content:flex-start; margin-bottom:1rem;">
+        <span style="width:40px;height:1px;background:var(--oro);display:block;"></span>
+        Reserva tu cita
+      </div>
+      <h2>Luce <em>impecable</em> cada día.</h2>
+      <p>Reserva tu cita ahora y experimenta el estándar BarberKing. Sin esperas, con atención personalizada.</p>
+      <div class="contacto-datos">
+        <div class="dato">
+          <div class="dato-icono">📍</div>
+          <div>
+            <div class="dato-label">Dirección</div>
+            <div class="dato-valor">Av. Larco 1234, Miraflores, Lima</div>
+          </div>
+        </div>
+        <div class="dato">
+          <div class="dato-icono">🕐</div>
+          <div>
+            <div class="dato-label">Horario</div>
+            <div class="dato-valor">Lun–Sáb: 9am – 8pm · Dom: 10am – 4pm</div>
+          </div>
+        </div>
+        <div class="dato">
+          <div class="dato-icono">📞</div>
+          <div>
+            <div class="dato-label">Teléfono</div>
+            <div class="dato-valor">+51 987 654 321</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contacto-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" placeholder="+51 000 000 000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Servicio</label>
+        <select>
+          <option value="" disabled selected>Selecciona un servicio</option>
+          <option>Corte Clásico — S/. 35</option>
+          <option>Corte + Barba — S/. 55</option>
+          <option>Afeitado Real — S/. 40</option>
+          <option>Diseño de Barba — S/. 25</option>
+          <option>Coloración — S/. 60</option>
+          <option>Tratamiento VIP — S/. 90</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Fecha</label>
+          <input type="date">
+        </div>
+        <div class="form-group">
+          <label>Hora</label>
+          <input type="time">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Notas (opcional)</label>
+        <textarea placeholder="¿Algo que debamos saber?"></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%; padding:1.1rem; font-size:0.75rem;">
+        Confirmar reserva
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Barber<span>King</span></div>
+    <p class="footer-text">© 2025 BarberKing · Todos los derechos reservados</p>
+    <ul class="footer-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>
